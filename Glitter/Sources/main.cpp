@@ -60,6 +60,9 @@ const GLchar* fragmentSource =
 "void main()"
 "{"
 "    vec3 norm = normalize(Color);"
+"    vec3 lightDir = normalize(lightPos - FragPos);"
+
+
 "    outColor = vec4(Color, 1.0);"
 "}";
 
