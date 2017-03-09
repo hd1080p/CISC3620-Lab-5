@@ -69,54 +69,48 @@ const GLchar* fragmentSource =
 "}";
 
 // vertex data
-GLfloat vertices [] = {
-  LEFT, TOP, FRONT, RED,        // front
-  LEFT, BOTTOM, FRONT, RED,
-  RIGHT, BOTTOM, FRONT, RED,
+GLfloat vertices[] = {
+  -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+  0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+  -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+  -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
   
-  LEFT, TOP, FRONT, RED,
-  RIGHT, BOTTOM, FRONT, RED,
-  RIGHT, TOP, FRONT, RED,
+  -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+  0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+  0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+  0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+  -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+  -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
   
-  LEFT, TOP, BACK, BLUE,        // left
-  LEFT, BOTTOM, BACK, BLUE,
-  LEFT, BOTTOM, FRONT, BLUE,
+  -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+  -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+  -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+  -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+  -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+  -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
   
-  LEFT, TOP, BACK, BLUE,
-  LEFT, BOTTOM, FRONT, BLUE,
-  LEFT, TOP, FRONT, BLUE,
+  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+  0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+  0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
   
-  RIGHT, TOP, BACK, GREEN,      // back
-  RIGHT, BOTTOM, BACK, GREEN,
-  LEFT, BOTTOM, BACK, GREEN,
+  -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+  0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+  -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+  -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
   
-  RIGHT, TOP, BACK, GREEN,
-  LEFT, BOTTOM, BACK, GREEN,
-  LEFT, TOP, BACK, GREEN,
-  
-  RIGHT, TOP, FRONT, ORANGE,      // right
-  RIGHT, BOTTOM, FRONT, ORANGE,
-  RIGHT, BOTTOM, BACK, ORANGE,
-  
-  RIGHT, TOP, FRONT, ORANGE,
-  RIGHT, BOTTOM, BACK, ORANGE,
-  RIGHT, TOP, BACK, ORANGE,
-  
-  LEFT, TOP, BACK, PURPLE,    // top
-  LEFT, TOP, FRONT, PURPLE,
-  RIGHT, TOP, FRONT, PURPLE,
-  
-  LEFT, TOP, BACK, PURPLE,
-  RIGHT, TOP, FRONT, PURPLE,
-  RIGHT, TOP, BACK, PURPLE,
-  
-  LEFT, BOTTOM, FRONT, YELLOW,    // bottom
-  LEFT, BOTTOM, BACK, YELLOW,
-  RIGHT, BOTTOM, BACK, YELLOW,
-  
-  LEFT, BOTTOM, FRONT, YELLOW,
-  RIGHT, BOTTOM, BACK, YELLOW,
-  RIGHT, BOTTOM, FRONT, YELLOW,
+  -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+  0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+  -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+  -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 };
 
 // callback for keyboard input
