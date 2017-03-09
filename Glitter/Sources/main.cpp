@@ -36,11 +36,13 @@ const GLchar* vertexSource =
 "in vec3 position;"               // expects 2 values for position
 "in vec3 color;"                  // and 3 values for color
 "out vec3 Color;"                 // will pass color along pipeline
+"out vec3 FragPos;"
 "uniform mat4 model;"             // uniform = the same for all vertices
 "uniform mat4 view;"
 "void main()"
 "{"
-"    Color = color;"              // just pass color along without modifying it
+"    Color = mat3(transpose(inverse(model))) * color;"
+"    FragPos = vec3(model * vec4(position, 1.0f));"
 "    gl_Position = view * model * vec4(position, 1.0);"   // gl_Position is special variable for final position
 "}";                                                    // must be in homogeneous coordinates -- put in 0 for z and 1 for w
 // multiply by model matrix to transform
