@@ -187,6 +187,10 @@ int main(int argc, char * argv[]) {
   GLint lightColorLoc = glGetUniformLocation(shaderProgram, "lightColor");
   GLint lightPosLoc = glGetUniformLocation(shaderProgram, "lightPos");
   GLint eyePosLoc = glGetUniformLocation(shaderProgram, "eyePos");
+  glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.3f);
+  glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
+  glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+  glUniform3f(eyePosLoc, eyePos.x, eyePos.y, eyePos.z);
   
   // model matrix
   GLint modelTransform = glGetUniformLocation(shaderProgram, "model");
