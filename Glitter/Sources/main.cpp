@@ -61,9 +61,11 @@ const GLchar* fragmentSource =
 "{"
 "    vec3 norm = normalize(Color);"
 "    vec3 lightDir = normalize(lightPos - FragPos);"
+"    float diff = max(dot(norm, lightDir), 0.0);"
+"    vec3 diffuse = diff * lightColor;"
 
-
-"    outColor = vec4(Color, 1.0);"
+"    vec3 result = (diffuse) * objectColor;"
+"    outColor = vec4(result, 1.0);"
 "}";
 
 // vertex data
