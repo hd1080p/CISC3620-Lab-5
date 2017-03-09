@@ -32,7 +32,7 @@
 #define BACK -0.5f
 
 const GLchar* vertexSource =
-"#version 150 core\n"             // glsl version
+"#version 330 core\n"             // glsl version
 "in vec3 position;"               // expects 2 values for position
 "in vec3 color;"                  // and 3 values for color
 "out vec3 Color;"                 // will pass color along pipeline
@@ -45,7 +45,7 @@ const GLchar* vertexSource =
 "}";                                                    // must be in homogeneous coordinates -- put in 0 for z and 1 for w
 // multiply by model matrix to transform
 const GLchar* fragmentSource =
-"#version 150 core\n"
+"#version 330 core\n"
 "in vec3 Color;"
 "out vec4 outColor;"
 "void main()"
@@ -179,6 +179,14 @@ int main(int argc, char * argv[]) {
   GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
   glEnableVertexAttribArray(colAttrib);
   glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+  
+  // lighting uniforms
+  glm::vec3 eyePos(0.0f, 0.0f, 3.0f);
+  glm::vec3 lightPos(-0.5f, 0.5f, 3.0f);
+  GLint objectColorLoc = glGetUniformLocation(shaderProgram, "objectColor");
+  GLint lightColorLoc = glGetUniformLocation(shaderProgram, "lightColor");
+  GLint lightPosLoc = glGetUniformLocation(shaderProgram, "lightPos");
+  GLint eyePosLoc = glGetUniformLocation(shaderProgram, "eyePos");
   
   // model matrix
   GLint modelTransform = glGetUniformLocation(shaderProgram, "model");
