@@ -49,6 +49,12 @@ const GLchar* vertexSource =
 const GLchar* fragmentSource =
 "#version 330 core\n"
 "in vec3 Color;"
+"in vec3 FragPos;"
+
+"uniform vec3 lightPos;"
+"uniform vec3 viewPos;"
+"uniform vec3 lightColor;"
+"uniform vec3 objectColor;"
 
 "out vec4 outColor;"
 "void main()"
