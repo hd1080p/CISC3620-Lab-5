@@ -59,12 +59,41 @@ const GLchar* fragmentSource =
 "out vec4 outColor;"
 "void main()"
 "{"
+/*
+  Diffuse Shading (Lambertian Shading Model):
+  Two parameters needed: Normal vector (to the surface)
+                         Light direction vector (from the surface to the source)
+
+  Equation: c = max(n (dot) l)
+    Where n = normal vector
+          l = light direction
+
+*/
 "    vec3 norm = normalize(Normal);"
 "    vec3 lightDir = normalize(lightPos - FragPos);"
 "    float diff = max(dot(norm, lightDir), 0.0);"
 "    vec3 diffuse = diff * lightColor;"
-
-"    vec3 result = (diffuse) * objectColor;"
+/*
+  Ambient Shading:
+  Given the lightColor multiply it by an ambientComponent.
+*/
+"    float ambientComponent = 0.4f;"
+"    vec3 ambient = ambientComponent * lightColor;"
+//Specular Lighting
+"    vec3 viewVector = normalize(viewPos - FragPos);"
+"    vec3 reflectVector = reflect(-lightDir, norm);"
+"    float strength = 0.8f;"
+/*
+  Specular component (c): c = cl*max(0, e (dot) r)^p
+  Where: cl = lightColor
+         e = viewVector
+         r = reflectVector
+         p = phong exponent
+*/
+"    float spec = pow(max(dot(viewVector, reflectVector), 0.0), 45);"
+"    vec3 specular = strength * spec * lightColor;"
+//Final color = ambient + diffuse + specular component * original Object's Color
+"    vec3 result = (ambient + diffuse + specular) * objectColor;"
 "    outColor = vec4(result, 1.0);"
 "}";
 
@@ -76,35 +105,35 @@ GLfloat vertices[] = {
   0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
   -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
   -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-  
+
   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
   0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
   0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
   0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
   -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-  
+
   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
   -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
   -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-  
+
   0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
   0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
   0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
   0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
   0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
   0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-  
+
   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
   0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
   0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
   0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
   -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-  
+
   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
   0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
   0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
@@ -124,7 +153,7 @@ void key_callback(GLFWwindow* mWindow, int key, int scancode, int action, int mo
     else std::cout << "moving camera left\n";  // move camera
     // etc.
   }
-    
+
 }
 
 int main(int argc, char * argv[]) {
@@ -141,28 +170,28 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "Failed to Create OpenGL Context");
     return EXIT_FAILURE;
   }
-  
+
   // callbacks
   glfwSetKeyCallback(mWindow, key_callback);
-  
+
   // Create Context and Load OpenGL Functions
   glfwMakeContextCurrent(mWindow);
   gladLoadGL();
   fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
-  
+
   glEnable(GL_DEPTH_TEST);
-  
+
   // Create Vertex Array Object: this will store all the information about the vertex data that we are about to specify
   GLuint vao;
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
-  
+
   // Create a Vertex Buffer Object and copy the vertex data to it
   GLuint vbo;
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  
+
   // Create and compile the vertex shader
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -178,7 +207,7 @@ int main(int argc, char * argv[]) {
   glBindFragDataLocation(shaderProgram, 0, "outColor");
   glLinkProgram(shaderProgram);
   glUseProgram(shaderProgram);
-  
+
   // Specify the layout of the vertex data
   // position
   GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
@@ -188,7 +217,7 @@ int main(int argc, char * argv[]) {
   GLint normAttrib = glGetAttribLocation(shaderProgram, "normal");
   glEnableVertexAttribArray(normAttrib);
   glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-  
+
   // lighting uniforms
   glm::vec3 eyePos(0.0f, 0.0f, 3.0f);
   glm::vec3 lightPos(-0.5f, 0.5f, 3.0f);
@@ -200,41 +229,41 @@ int main(int argc, char * argv[]) {
   glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
   glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
   glUniform3f(eyePosLoc, eyePos.x, eyePos.y, eyePos.z);
-  
+
   // model matrix
   GLint modelTransform = glGetUniformLocation(shaderProgram, "model");
   glm::mat4 rotate_model = glm::rotate(glm::mat4(1.0f), 15.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-  
+
   // view matrix
   glm::mat4 ortho_model = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
   GLint viewTransform = glGetUniformLocation(shaderProgram, "view");
   glUniformMatrix4fv(viewTransform, 1, GL_FALSE, glm::value_ptr(ortho_model));
-	
+
   // Rendering Loop
   float r = 0.1f;
   while (glfwWindowShouldClose(mWindow) == false) {
-    
+
     // Background Fill Color
     glClearColor(0.9f, 0.9f, 0.9f, 0.8f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     glm::mat4 model = glm::rotate(rotate_model, r+=0.01, glm::vec3(0.0f, 1.0f, 0.0f));
     glUniformMatrix4fv(modelTransform, 1, GL_FALSE, glm::value_ptr(model));
 
     // draw triangle
     glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/sizeof(vertices[0]));
-    
+
     // Flip Buffers and Draw
     glfwSwapBuffers(mWindow);
     glfwPollEvents();
   }   glfwTerminate();
-  
+
   // clean up
   glDeleteProgram(shaderProgram);
   glDeleteShader(fragmentShader);
   glDeleteShader(vertexShader);
   glDeleteBuffers(1, &vbo);
   glDeleteVertexArrays(1, &vao);
-  
+
   return EXIT_SUCCESS;
 }
